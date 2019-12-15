@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DKP总分查看</title>
+
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .page
+        {
+            display: inline-block;
+            background: aliceblue;
+        }
+        .response
+        {
+            color: red;
+            font-size: 12px;
+        }
+    </style>
+
+</head>
+<body>
+<div class="container-fluid">
+
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="score.html">DKP总分查看</a>
+                <a class="navbar-brand" href="manager.html">DKP成员查看</a>
+                <a class="navbar-brand" href="record.html">DKP增减记录查看</a>
+                <a class="navbar-brand" href="mission.html">预设任务查看</a>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><span class="glyphicon glyphicon-user" id="add"></span></a></li>
+
+            </ul>
+        </div>
+    </nav>
+
+
+    <table class="table table-striped" >
+        <tr>
+            <td width="20%"><a href="javascript:;" id="user">User</a></td>
+            <td width="20%"><a href="javascript:;" id="name">Name</a></td>
+            <td width="20%"><a href="javascript:;" id="score">Score</a></td>
+            <td width="20%">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Group <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="javascript:;" id="rjz">软件组</a></li>
+                        <li><a href="javascript:;" id="yjz">硬件组</a></li>
+                        <li><a href="javascript:;" id="waz">文案组</a></li>
+                        <li><a href="javascript:;" id="sjz">设计组</a></li>
+                    </ul>
+                </div></td>
+            <td width="20%">more</td>
+        </tr>
+    </table>
+    <table id="person" class="table table-striped">
+        <tbody>
+
+        </tbody>
+    </table>
+
+    <div id="barcon"></div>
+
+
+
+
+
+
+
+    <div class="input-group">
+        <input  type="text" id="query" width="500px"><div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            查询 <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li><a href="#" id="query_button">user查询</a></li>
+            <li><a href="#" id="query_button2">name查询</a></li>
+            <li><a href="#" id="query_button3">group查询</a></li>
+        </ul>
+    </div>
+
+    </div>
+    <p id="select_response" class="response">
+
+
+    <table id="response_table"  width="600px">
+        <thead>
+          <th width="25%">user</th>
+          <th width="25%">name</th>
+          <th width="25%">score</th>
+          <th width="25%">group</th>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+
+    </p>
+
+
+</div>
+</body>
+
+<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script>
+    $(document).ready(function ()
+    {
+        $.ajax({
+            type:'GET',
+            url:'manager.php',
+            dataType:'json',
+            success:function (res) {
+                for (var i in res.user){
+                    $("#person").append('<tr>'
+                        +'<td width="360px">'+res.user[i]+'</td>'
+                        +'<td width="360px">'+res.name[i]+'</td>'
+                        +'<td width="360px">'+res.score[i]+'</td>'
+                        +'<td width="360px">'+res.group[i]+'</td>'
+                        +'<td width="360px"><a href="record.html">详细</a></td>'
+                        + '</tr>'
+                       );
+                };
+
+                goPage(1,10);
+
+                $("#query_button").click(function () {
+
+                    $.ajax({
+                        type:'POST',
+                        url:'score_select.php',
+                        dataType:'json',
+                        data:{
+                            info:$("#query").val(),
+                            type:'user'
+                        },
+                        success:function (res) {
+                                $("#select_response").html(res.msg+'<br>');
+                                for (var i in res.user) {
+                                    $("#response_table").append(
+                                        '<tr><td>' + res.user[i]
+                                        + '</td><td>' + res.name[i]
+                                        + '</td><td>' + res.score[i]
+                                        + '</td><td>' + res.group[i]
+                                        +'<td><a href="record.html">详细</a></td>'
+                                        + '</tr>'
+                                    );
+                                }
+
+                        },
+
+                    });
+                });
+
+
+                $("#query_button2").click(function () {
+
+                    $.ajax({
+                        type:'POST',
+                        url:'score_select.php',
+                        dataType:'json',
+                        data:{
+                            info:$("#query").val(),
+                            type:'name',
+                        },
+                        success:function (res) {
+
+                                $("#select_response").html(res.msg+'<br>');
+                                for (var i in res.user) {
+                                    $("#response_table").append(
+                                        '<tr><td>' + res.user[i]
+                                        + '</td><td>' + res.name[i]
+                                        + '</td><td>' + res.score[i]
+                                        + '</td><td>' + res.group[i]
+                                        +'<td><a href="record.html">详细</a></td>'
+                                        + '</tr>'
+                                    );
+                                }
+
+
+                        },
+
+                    });
+                });
+
+
+
+                $("#query_button3").click(function () {
+
+                    $.ajax({
+                        type:'POST',
+                        url:'score_select.php',
+                        dataType:'json',
+                        data:{
+                            info:$("#query").val(),
+                            type:'group',
+                        },
+                        success:function (res) {
+
+                                $("#select_response").html(res.msg+'<br>');
+                                for (var i in res.user) {
+                                    $("#response_table").append(
+                                        '<tr><td>' + res.user[i]
+                                        + '</td><td>' + res.name[i]
+                                        + '</td><td>' + res.score[i]
+                                        + '</td><td>' + res.group[i]
+                                        +'<td><a href="record.html">详细</a></td>'
+                                        + '</tr>'
+                                    );
+                                }
+
+
+                        },
+
+                    });
+                });
+                $("#user").click(function () {
+                   $.ajax({
+                       type:'POST',
+                       url:'sort.php',
+                       dataType:'json',
+                       data: {
+                           msg:'user',
+                       },
+                       success:function (res) {
+                          if (res.infocode==1) {
+                              $("#person").html(null);
+                              for (var i in res.user) {
+                                  $("#person").append('<tr>'
+                                      + '<td width="360px">' + res.user[i] + '</td>'
+                                      + '<td width="360px">' + res.name[i] + '</td>'
+                                      + '<td width="360px">' + res.score[i] + '</td>'
+                                      + '<td width="360px">' + res.group[i] + '</td>'
+                                      +'<td width="360px"><a href="record.html">详细</a></td>'
+                                      + '</tr>'
+                                  );
+                              }
+                              goPage(1,10);
+                          }
+                       }
+                   });
+                });
+                $("#name").click(function () {
+                    $.ajax({
+                        type:'POST',
+                        dataType:'json',
+                        url:'sort.php',
+                        data: {
+                            msg:'name',
+                        },
+                        success:function (res) {
+                            if (res.infocode==1) {
+                                $("#person").html(null);
+                                for (var i in res.user) {
+                                    $("#person").append('<tr>'
+                                        + '<td width="360px">' + res.user[i] + '</td>'
+                                        + '<td width="360px">' + res.name[i] + '</td>'
+                                        + '<td width="360px">' + res.score[i] + '</td>'
+                                        + '<td width="360px">' + res.group[i] + '</td>'
+                                        +'<td width="360px"><a href="record.html">详细</a></td>'
+                                        + '</tr>'
+                                    );
+
+                                }
+                                goPage(1,10);
+                            }
+                        }
+                    });
+                });
+                $("#score").click(function () {
+                    $.ajax({
+                        type:'POST',
+                        url:'sort.php',
+                        dataType:'json',
+                        data: {
+                            msg:'score',
+                        },
+                        success:function (res) {
+                            if (res.infocode==1) {
+                                $("#person").html(null);
+                               for (var i in res.user) {
+                                    $("#person").append('<tr>'
+                                        + '<td width="360px">' + res.user[i] + '</td>'
+                                        + '<td width="360px">' + res.name[i] + '</td>'
+                                        + '<td width="360px">' + res.score[i] + '</td>'
+                                        + '<td width="360px">' + res.group[i] + '</td>'
+                                        +'<td width="360px"><a href="record.html">详细</a></td>'
+                                        + '</tr>'
+                                    );
+                                }
+                                goPage(1,10);
+                            }
+                        }
+                    });
+                });
+
+               $("#rjz").click(function () {
+                   $.ajax({
+                       type:'POST',
+                       url:'sort.php',
+                       dataType:'json',
+                       data:{
+                           msg:'软件组',
+                       },
+                       success: function (res) {
+                           if (res.infocode==1) {
+                               $("#person").html(null);
+                               for (var i in res.user) {
+                                   $("#person").append('<tr>'
+                                       + '<td width="360px">' + res.user[i] + '</td>'
+                                       + '<td width="360px">' + res.name[i] + '</td>'
+                                       + '<td width="360px">' + res.score[i] + '</td>'
+                                       + '<td width="360px">' + res.group[i] + '</td>'
+                                       +'<td width="360px"><a href="record.html">详细</a></td>'
+                                       + '</tr>'
+                                   );
+                               }
+                               goPage(1,10);
+                           }
+                       },
+                   });
+               });
+                $("#yjz").click(function () {
+                    $.ajax({
+                        type:'POST',
+                        url:'sort.php',
+                        dataType:'json',
+                        data:{
+                            msg:'硬件组',
+                        },
+                        success: function (res) {
+                            if (res.infocode==1) {
+                                $("#person").html(null);
+                                for (var i in res.user) {
+                                    $("#person").append('<tr>'
+                                        + '<td width="360px">' + res.user[i] + '</td>'
+                                        + '<td width="360px">' + res.name[i] + '</td>'
+                                        + '<td width="360px">' + res.score[i] + '</td>'
+                                        + '<td width="360px">' + res.group[i] + '</td>'
+                                        +'<td width="360px"><a href="record.html">详细</a></td>'
+                                        + '</tr>'
+                                    );
+                                }
+                                goPage(1,10);
+                            }
+                        },
+                    });
+                });
+                $("#waz").click(function () {
+                    $.ajax({
+                        type:'POST',
+                        url:'sort.php',
+                        dataType:'json',
+                        data:{
+                            msg:'文案组',
+                        },
+                        success: function (res) {
+                            if (res.infocode==1) {
+                                $("#person").html(null);
+                                for (var i in res.user) {
+                                    $("#person").append('<tr>'
+                                        + '<td width="360px">' + res.user[i] + '</td>'
+                                        + '<td width="360px">' + res.name[i] + '</td>'
+                                        + '<td width="360px">' + res.score[i] + '</td>'
+                                        + '<td width="360px">' + res.group[i] + '</td>'
+                                        +'<td width="360px"><a href="record.html">详细</a></td>'
+                                        + '</tr>'
+                                    );
+                                }
+                                goPage(1,10);
+                            }
+                        },
+                    });
+                });
+                $("#sjz").click(function () {
+                    $.ajax({
+                        type:'POST',
+                        url:'sort.php',
+                        dataType:'json',
+                        data:{
+                            msg:'设计组',
+                        },
+                        success: function (res) {
+                            if (res.infocode==1) {
+                                $("#person").html(null);
+                                for (var i in res.user) {
+                                    $("#person").append('<tr>'
+                                        + '<td width="360px">' + res.user[i] + '</td>'
+                                        + '<td width="360px">' + res.name[i] + '</td>'
+                                        + '<td width="360px">' + res.score[i] + '</td>'
+                                        + '<td width="360px">' + res.group[i] + '</td>'
+                                        +'<td width="360px"><a href="record.html">详细</a></td>'
+                                        + '</tr>'
+                                    );
+                                }
+                                goPage(1,10);
+                            }
+                        },
+                    });
+                });
+
+            },
+        });
+
+
+
+
+    });
+</script>
+<script>
+    function goPage(pno,psize){
+        var itable = document.getElementById("person");
+        var num = itable.rows.length;
+        var totalPage = 0;
+        var pageSize = psize;
+        if(num/pageSize > parseInt(num/pageSize)){
+            totalPage=parseInt(num/pageSize)+1;
+        }else{
+            totalPage=parseInt(num/pageSize);
+        }
+        var currentPage = pno;
+        var startRow = (currentPage - 1) * pageSize+1;
+        var endRow = currentPage * pageSize;
+        endRow = (endRow > num)? num : endRow;
+        for(var i=1;i<(num+1);i++){
+            var irow = itable.rows[i-1];
+            if(i>=startRow && i<=endRow){
+                irow.style.display = "block";
+            }else{
+                irow.style.display = "none";
+            }0
+        }
+        var tempStr = "共"+ num +"条记录   分"+totalPage+"页   当前第"+currentPage+"页";
+        if(currentPage>1){
+            tempStr += " <div class='page'> <a href=\"#\" onClick=\"goPage("+(1)+","+psize+")\">首页</a> </div> ";
+            tempStr += " <div class='page'> <a href=\"#\" onClick=\"goPage("+(currentPage-1)+","+psize+")\"><上一页</a> </div> "
+        }else{
+            tempStr += "<div class='page'> 首页 </div>";
+            tempStr += " <div class='page'><上一页 </div>";
+        }
+        if(currentPage<totalPage){
+            tempStr += " <div class='page'> <a href=\"#\" onClick=\"goPage("+(currentPage+1)+","+psize+")\">下一页></a> </div> ";
+            tempStr += " <div class='page'> <a href=\"#\" onClick=\"goPage("+(totalPage)+","+psize+")\">尾页</a> </div> ";
+        }else{
+            tempStr += " <div class='page'> 下一页> </div>";
+            tempStr += " <div class='page'> 尾页 </div>";
+        }
+        document.getElementById("barcon").innerHTML = tempStr;
+    }
+
+</script>
+
+
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="https://v3.bootcss.com/favicon.ico">
+
+    <title>Sign in</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+
+  </head>
+
+  <body>
+
+    <div class="container">
+
+
+        <h2 class="form-signin-heading">请登录</h2>
+
+
+        <input type="email" id="inputEmail" class="form-control">
+
+        <input type="password" id="inputPassword" class="form-control" >
+
+        <button class="btn btn-lg btn-primary btn-block" id="bt1" type="submit">Sign in</button>
+
+
+    </div>
+
+
+
+
+</body>
+<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script>
+
+    $(document).ready(function () {
+        $("#bt1").click(function () {
+            $.ajax({
+                type:'post',
+                url:'login.php',
+                data:{
+                    username:$("#inputEmail").val(),
+                    password:$("#inputPassword").val(),
+                },
+                dataType:'json',
+                success: function (res) {
+                    console.log(res);
+                    switch (res.infoCode) {
+                        case 0:{
+                            alert("登录失败，请检查用户名或密码");
+                            $("#inputEmail").val(null);
+                            $("#inputPassword").val(null);
+                        }break;
+
+                        case 1:{
+                            alert("登陆成功");
+                            window.location.assign("manager.html");
+
+
+                        }break;
+
+                        case 2:alert("服务器连接失败,请检查网络连接");
+                        break;
+                    };
+
+
+                }
+            })
+
+
+        });
+
+    });
+</script>
+
+
+</html>

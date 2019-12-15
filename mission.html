@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>预设任务查看</title>
+
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .page
+        {
+            display: inline-block;
+            background: aliceblue;
+        }
+        .response
+        {
+            color: red;
+            font-size: 12px;
+        }
+    </style>
+
+</head>
+<body>
+<div class="container-fluid">
+
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="score.html">DKP总分查看</a>
+                <a class="navbar-brand" href="manager.html">DKP成员查看</a>
+                <a class="navbar-brand" href="record.html">DKP增减记录查看</a>
+                <a class="navbar-brand" href="mission.html">预设任务查看</a>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><span class="glyphicon glyphicon-user" id="add"></span> <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                    添加
+                </button></a></li>
+
+            </ul>
+        </div>
+    </nav>
+
+
+    <table class="table table-striped" >
+        <thead>
+          <td width="20%">user</td>
+          <td width="10%">name</td>
+          <td width="10%">score</td>
+          <td width="10%">group</td>
+          <td width="20%">mission</td>
+          <td width="10%"></td>
+          <td width="10%"></td>
+          <td width="10%"></td>
+        </thead>
+    </table>
+    <table class="table table-striped"  id="person" >
+
+
+    </table>
+    <div id="barcon"></div>
+
+    <!--添加数据的模态框-->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">添加</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="input-group">
+                        <span class="input-group-addon">user:</span>
+                        <input type="text" class="form-control" placeholder="2019xxxxxxx" id="user">
+
+                    </div><br>
+                    <p id="add_user_response" class="response"></p><br>
+                    <div class="input-group">
+                        <span class="input-group-addon">name:</span>
+                        <input type="text" class="form-control" placeholder="张三" id="name">
+
+                    </div><br>
+                    <p id="add_name_response" class="response"></p><br>
+
+                    <div class="input-group">
+                        <span class="input-group-addon">score:</span>
+                        <input type="text" class="form-control" placeholder="" id="score">
+
+                    </div><br>
+                    <p id="add_score_response" class="response"></p><br>
+                    <div class="input-group">
+                        <span class="input-group-addon" >group:</span>
+                        <input type="text" class="form-control" placeholder="软件组/硬件组/设计组/文案组" id="group">
+
+                    </div><br>
+                    <div class="input-group">
+                        <span class="input-group-addon">mission:</span>
+                        <input type="text" class="form-control" placeholder="任务" id="mission">
+                        <p id="add_mission_response" class="response"></p><br>
+                    </div><br>
+                    <p id="add_group_response" class="response"></p><br>
+                    <p id="add_response"></p>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" id="add_data_close">关闭</button>
+                    <button type="button" class="btn btn-primary" id="add_data">提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--更新数据的模态框-->
+    <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel2">修改</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="input-group">
+                        <span class="input-group-addon">name:</span>
+                        <input type="text" class="form-control" placeholder="张三" id="update_name">
+
+                    </div><br>
+                    <p id="update_name_response" class="response"></p><br>
+
+                    <div class="input-group">
+                        <span class="input-group-addon">score:</span>
+                        <input type="text" class="form-control" placeholder="" id="update_score">
+
+                    </div><br>
+                    <p id="update_score_response" class="response"></p><br>
+                    <div class="input-group">
+                        <span class="input-group-addon" >group:</span>
+                        <input type="text" class="form-control" placeholder="软件组/硬件组/设计组/文案组" id="update_group">
+
+                    </div><br>
+                    <p id="update_group_response" class="response"></p><br>
+
+                    <div class="input-group">
+                        <span class="input-group-addon">mission</span>
+                        <input type="text" class="form-control" placeholder="任务" id="update_mission">
+
+                    </div><br>
+                    <p id="update_mission_response" class="response"></p><br>
+
+                    <p id="update_response"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" id="update_data_close">关闭</button>
+                    <button type="button" class="btn btn-primary" id="update_data">保存修改</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+    <div class="input-group">
+        <input  type="text" id="query" width="500px">
+        <button type="button" class="btn btn-primary" id="query_button">查询</button>
+    </div>
+    <p id="select_response" class="response">
+
+    <table id="response_table"  width="600px">
+        <tr>
+            <th width="20%">user</th>
+            <th width="20%">name</th>
+            <th width="20%">score</th>
+            <th width="20%">group</th>
+            <th width="40%">mission</th>
+        </tr>
+    </table>
+    </p>
+
+
+</div>
+</body>
+<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script>
+    $(document).ready(function ()
+    {
+        $.ajax({
+            type:'GET',
+            url:'mission.php',
+            dataType:'json',
+            success:function (res) {
+                console.log(res);
+                for (var i in res.user){
+                    $("#person").append('<tr>'
+                        +'<td class="user" width="20%">'+res.user[i]+'</td>'
+                        +'<td class="name" width="10%">'+res.name[i]+'</td>'
+                        +'<td class="score" width="10%">'+res.score[i]+'</td>'
+                        +'<td class="group" width="10%">'+res.group[i]+'</td>'
+                        +'<td class="mission" width="20%">'+res.mission[i]+'</td>>'
+                        +'<td width="10%"><a href="javascript:;" class="delete">删除</a></td>'
+                        +'<td width="10%"><button type="button" class="update" data-toggle="modal" data-target="#myModal2">修改</button></td>'
+                        +'<td width="10%"><button type="button" class="finish" >完成</button></td></tr>');
+                };
+
+                goPage(1,10);
+
+                $(".delete").click(function ()
+                {
+                    var user = this.parentNode.parentNode.firstChild.innerHTML;
+                    var mission=this.parentNode.parentNode.childNodes[4].innerHTML;
+                    var tr=this.parentNode.parentNode;
+                    var flag=confirm("确认删除吗");
+                    if (flag)
+                    {
+                        tr.parentNode.removeChild(tr);
+                        $.ajax({
+                            type:'POST',
+                            url:'mission_delete.php',
+                            data:{
+                                user:user,
+                                mission:mission,
+                            },
+                            dataType:'json',
+
+                            success:function (res) {
+
+                                if (res.status=='success')
+                                    alert("删除成功");
+                                if (res.status=='fail')
+                                    alert("服务器连接失败，请检查网络后重连");
+                            },
+                        });
+
+                    }
+                });
+
+                $(".finish").click(function () {
+
+                    var user=this.parentNode.parentNode.firstChild.innerHTML;
+                    var score=this.parentNode.parentNode.childNodes[2].innerHTML;
+                    var mission=this.parentNode.parentNode.childNodes[4].innerHTML;
+                    var tr=this.parentNode.parentNode;
+
+                    $.ajax({
+                        type:'POST',
+                        url:'mission_finish.php',
+                        dataType:'json',
+                        data:{
+                            user:user,
+                            score:score,
+                        },
+                        success: function (res) {
+                            if (res.status=="success")
+                            {
+                                $.ajax({
+                                   type:'POST',
+                                   url:'mission_delete.php',
+                                   dataType:'json',
+                                   data:{
+                                     mission:mission,
+                                       user:user,
+                                   },
+                                    success:function (res) {
+                                         alert("mission success");
+                                        tr.parentNode.removeChild(tr);
+                                    },
+                                });
+                            }
+
+                        },
+
+                    });
+
+
+
+                });
+
+                $("#update_group").blur(function () {
+                    if ($("#update_group").val()!='软件组'&&$("#group").val()!='硬件组'&&$("#group").val()!='文案组'&&$("#group").val()!='设计组'&&$("#group").val()==null) {
+                        $("#update_group").val(null);
+                        $("#update_group_response").html("您输入的group有误 请重新输入");
+                    }
+                });
+                $("#update_group").focus(function () {
+                    $("#update_group_response").html(null);
+                });
+
+
+
+                $(".update").click(function () {
+
+                    var user=this.parentNode.parentNode.firstChild.innerHTML;
+                    var name=this.parentNode.parentNode.childNodes[1].innerHTML;
+                    var score=this.parentNode.parentNode.childNodes[2].innerHTML;
+                    var group=this.parentNode.parentNode.childNodes[3].innerHTML;
+                    var mission=this.parentNode.parentNode.childNodes[4].innerHTML;
+
+                    $("#update_name").val(name);
+                    $("#update_mission").val(mission);
+                    $("#update_score").val(score);
+                    $("#update_group").val(group);
+
+                    $("#update_data").click(function () {
+
+                        $.ajax({
+                            type:'post',
+                            url:'mission_update.php',
+                            dataType:'json',
+                            data:{
+                                user: user,
+                                name: $("#update_name").val(),
+                                score: $("#update_score").val(),
+                                group: $("#update_group").val(),
+                                mission: $("#update_mission").val(),
+
+                            },
+                            success:function (res) {
+                                console.log(res);
+                                $("#update_response").html(res.msg);
+                            },
+                        });
+
+                    });
+
+                });
+
+                $("#query_button").click(function () {
+
+                    $.ajax({
+                        type:'POST',
+                        url:'mission_select.php',
+                        dataType:'json',
+                        data:{
+                            user:$("#query").val(),
+                            type:'mission',
+                        },
+                        success:function (res) {
+
+                                $("#select_response").html(res.msg+'<br>');
+                                for (var i in res.user)
+                                    $("#response_table").append('<tr><td>'+res.user[i]+ '</td>'+
+                                        '<td>'+res.name[i]+'</td>'+
+                                        '<td>'+res.score[i]+'</td>'+
+                                        '<td>'+res.group[i]+'</td>'+
+                                        '<td>'+res.mission[i]+'</td></tr>');
+
+
+
+                        },
+
+                    });
+                });
+
+            },
+        });
+
+
+        $("#user").blur(function () {
+            if ($("#user").val().length>11&&$("#user").val().length==0)
+            {
+                $("#user").val(null);
+                $("#add_user_response").html("您输入的user值超出范围 请重新输入");
+
+            }
+        });
+        $("#user").focus(function () {
+            if ($("#user").val().length<=11&&$("#user").val().length>0)
+                $("#add_user_response").html(null);
+
+        });
+
+        });
+        $("#group").blur(function () {
+            if ($("#group").val()!='软件组'&&$("#group").val()!='硬件组'&&$("#group").val()!='文案组'&&$("#group").val()!='设计组'&&$("#group").val()==null) {
+                $("#group").val(null);
+                $("#add_group_response").html("您输入的group有误 请重新输入");
+            }
+        });
+        $("#group").focus(function () {
+            $("#add_group_response").html(null);
+        });
+
+
+
+
+        $("#add_data").click(function ()
+        {
+            var user=$("#user").val();
+            var name=$("#name").val();
+            var score=$("#score").val();
+            var group=$("#group").val();
+            var mission=$("#mission").val();
+
+            $.ajax({
+                type:'POST',
+                url:'mission_add.php',
+                dataType:'json',
+                data:{
+                    user: $("#user").val(),
+                    name: $("#name").val(),
+                    mission: $("#mission").val(),
+                    score: $("#score").val(),
+                    group: $("#group").val(),
+                },
+
+                success:function (res) {
+                    if (res.add_data=="添加成功"){
+                        $("#person").append('<tr><td class="user" width="20%">'+user+'</td>'
+                            +'<td class="name" width="10%">'+ name +'</td>'
+                            +'<td class="score" width="10%">'+ score +'</td>'
+                            +'<td class="group" width="10%">'+ group +'</td>'
+                            +'<td class="mission" width="30%">'+ mission +'</td>>'
+                            +'<td width="10%"><a href="javascript:;" class="delete">删除</a></td>'
+                            + '<td width="10%"><button type="button" class="update" data-toggle="modal" data-target="#myModal2">'
+                            + '修改 </button></td></tr>');
+                    }
+
+                    $("#add_response").html(res.add_data);
+
+                },
+
+            });
+
+        });
+
+
+
+</script>
+<script>
+    function goPage(pno,psize){
+        var itable = document.getElementById("person");
+        var num = itable.rows.length;
+        var totalPage = 0;
+        var pageSize = psize;
+        if(num/pageSize > parseInt(num/pageSize)){
+            totalPage=parseInt(num/pageSize)+1;
+        }else{
+            totalPage=parseInt(num/pageSize);
+        }
+        var currentPage = pno;
+        var startRow = (currentPage - 1) * pageSize+1;
+        var endRow = currentPage * pageSize;
+        endRow = (endRow > num)? num : endRow;
+        for(var i=1;i<(num+1);i++){
+            var irow = itable.rows[i-1];
+            if(i>=startRow && i<=endRow){
+                irow.style.display = "block";
+            }else{
+                irow.style.display = "none";
+            }
+        }
+        var tempStr = "共"+  num  +"条记录   分"+totalPage+"页   当前第"+currentPage+"页";
+        if(currentPage>1){
+            tempStr += " <div class='page'> <a href=\"#\" onClick=\"goPage("+(1)+","+psize+")\">首页</a> </div> ";
+            tempStr += " <div class='page'> <a href=\"#\" onClick=\"goPage("+(currentPage-1)+","+psize+")\"><上一页</a> </div> "
+        }else{
+            tempStr += "<div class='page'> 首页 </div>";
+            tempStr += " <div class='page'><上一页 </div>";
+        }
+        if(currentPage<totalPage){
+            tempStr += " <div class='page'> <a href=\"#\" onClick=\"goPage("+(currentPage+1)+","+psize+")\">下一页></a> </div> ";
+            tempStr += " <div class='page'> <a href=\"#\" onClick=\"goPage("+(totalPage)+","+psize+")\">尾页</a> </div> ";
+        }else{
+            tempStr += " <div class='page'> 下一页> </div>";
+            tempStr += " <div class='page'> 尾页 </div>";
+        }
+        document.getElementById("barcon").innerHTML = tempStr;
+    }
+
+</script>
+
+
+</html>
